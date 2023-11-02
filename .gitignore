@@ -5,6 +5,7 @@ __pycache__/
 .idea/
 *.html
 *.json
+*.txt
 # C extensions
 *.so
 
