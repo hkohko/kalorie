@@ -1,5 +1,6 @@
 import make_request
-from constants import ENV_FILE, PAGES_DIR
+
+from kalorie.constants import ENV_FILE, PAGES_DIR
 
 
 def save_pages() -> None:
