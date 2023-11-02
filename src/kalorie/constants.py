@@ -7,6 +7,7 @@ SRC = PROJ_DIR.joinpath("src")
 KALORIE = SRC.joinpath("kalorie")
 ENV = PROJ_DIR.joinpath(".env")
 PAGES_DIR = KALORIE.joinpath("page")
+DATADUMP_DIR = KALORIE.joinpath("data_dump")
 
 PAGE_SOURCE1 = "SOURCE1.html"
 PAGE_SOURCE2_1 = "SOURCE2_1.html"
