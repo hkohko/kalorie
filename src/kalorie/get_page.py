@@ -1,13 +1,13 @@
 import make_request
-from constants import PAGE_SOURCE1, PAGES, SOURCE1
-from decor import save_file
+from constants import ENV_FILE, PAGES_DIR
 
 
-@save_file(PAGES.joinpath(PAGE_SOURCE1))
-def save_page_source_1() -> str:
-    response = make_request.main(SOURCE1)
-    return response.text
+def save_pages() -> None:
+    for name, url in dict(ENV_FILE).items():
+        response = make_request.main(url)
+        with open(PAGES_DIR.joinpath(f"{name}.html"), "w") as file:
+            file.write(response.text)
 
 
 if __name__ == "__main__":
-    save_page_source_1()
+    save_pages()
