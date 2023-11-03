@@ -1,4 +1,5 @@
 import csv
+import json
 from collections.abc import Iterator
 
 from kalorie.constants import DATADUMP_DIR
@@ -96,8 +97,8 @@ def simplify_rows():
 
 def sanitize():
     compile_result = []
-
     lost_data = []
+
     list_of_simplified_rows = simplify_rows()
 
     for rows in list_of_simplified_rows:
@@ -112,10 +113,16 @@ def sanitize():
             compile_result.append(data)
         else:
             lost_data.append(data)
-    print(compile_result)
     print("Cleaned data: ", len(compile_result))
     print("Data lost: ", len(lost_data))
+    return compile_result
+
+
+def save_data():
+    to_save = sanitize()
+    with open(DATADUMP_DIR.joinpath("final_data.json"), "w") as file:
+        json.dump(to_save, file)
 
 
 if __name__ == "__main__":
-    sanitize()
+    save_data()
