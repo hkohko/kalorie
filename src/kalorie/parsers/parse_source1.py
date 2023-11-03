@@ -1,26 +1,24 @@
 from html.parser import HTMLParser
 
 from bs4 import BeautifulSoup
-from constants import DATADUMP_DIR, PAGES_DIR
+
+from kalorie.constants import DATADUMP_DIR, PAGES_DIR
 
 
 class Source1Parser(HTMLParser):
     def handle_starttag(self, tag, attrs):
         if tag == "tr":
-            print(tag)
             self.write_file("\n")
         if tag == "td":
-            print(tag)
             self.write_file(",")
 
     def handle_data(self, data):
         if data.strip() == "" or data is None:
             return None
-        print(data)
         self.write_file(data)
 
     def write_file(self, data):
-        with open(DATADUMP_DIR.joinpath("data.txt"), "a") as file:
+        with open(DATADUMP_DIR.joinpath("data_source1.txt"), "a") as file:
             file.write(data)
 
 
@@ -41,9 +39,25 @@ def parse_source1_data():
     parser = Source1Parser()
     with open(PAGES_DIR.joinpath("SOURCE1_TABLE.html")) as file:
         read = file.read()
-    result = parser.feed(read)
-    print(result)
+    parser.feed(read)
+
+
+def write_non_blank_lines():
+    lines = []
+    with open(DATADUMP_DIR.joinpath("data_source1.txt")) as file:
+        for line in file:
+            if line.strip() in ("", "\n"):
+                continue
+            lines.append(line)
+    with open(DATADUMP_DIR.joinpath("data_source1_clean.csv"), "w") as file:
+        file.write("".join(lines))
+
+
+def main():
+    simplify_page_source1()
+    parse_source1_data()
+    write_non_blank_lines()
 
 
 if __name__ == "__main__":
-    parse_source1_data()
+    main()
