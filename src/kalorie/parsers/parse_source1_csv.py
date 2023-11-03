@@ -51,6 +51,7 @@ def remove_table_title(discarded_leftver_decimal: list[str]):
         for word in banned_words:
             if word in item.lower():
                 discarded_leftver_decimal.pop(idx)
+                return discarded_leftver_decimal
     return discarded_leftver_decimal
 
 
@@ -67,7 +68,18 @@ def to_dict(first_three: list[str]):
                 "kalori": int(first_three[2]),
             }, True
         except ValueError:
+            print(first_three)
             return "lost", False
+    else:
+        return "lost", False
+
+
+def remove_literal_unit(discarded_table_title: list[str]):
+    if discarded_table_title[0].lower() == "unit":
+        discarded_table_title.pop(0)
+        return discarded_table_title
+    else:
+        return discarded_table_title
 
 
 def simplify_rows():
@@ -92,17 +104,15 @@ def sanitize():
         discarded_empty_string = remove_empty_strings(rows)
         discarded_leftover_decimal = remove_leftover_decimal(discarded_empty_string)
         discarded_table_title = remove_table_title(discarded_leftover_decimal)
-        first_three = get_first_three(discarded_table_title)
+        discarded_literal_unit = remove_literal_unit(discarded_table_title)
+        first_three = get_first_three(discarded_literal_unit)
         converted_to_dict = to_dict(first_three)
-
-        if converted_to_dict is None:
-            lost_data.append("lost")
-            continue
         data, check = converted_to_dict
         if check:
             compile_result.append(data)
         else:
             lost_data.append(data)
+    print(compile_result)
     print("Cleaned data: ", len(compile_result))
     print("Data lost: ", len(lost_data))
 
