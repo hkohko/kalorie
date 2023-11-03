@@ -29,9 +29,12 @@ def simplify_page_source1():
         read = file.read()
     soup = BeautifulSoup(read, "lxml")
     table = soup.find("table")
-    print(table)
+    tbody = table.find("tbody")
+    trs = tbody.find_all("tr")
+    trs_list = [str(tr) for tr in trs if tr.get("class") is None]
+
     with open(PAGES_DIR.joinpath("SOURCE1_TABLE.html"), "w") as file:
-        file.write(str(table))
+        file.write("\n".join(trs_list))
 
 
 def parse_source1_data():
